@@ -27,6 +27,13 @@ func(controller *OkLogController) FindById(ctx *fiber.Ctx) error {
 
 	logResponse := controller.okLogService.FindById(uint(id))
 
+		if (logResponse.ID == 0) {
+
+		return helper.HandleNotFound(ctx, "No existe ningún " +
+		 "Ok Log con ese ID")
+
+	} 
+
 	return ctx.Status(fiber.StatusOK).JSON(logResponse)
 
 }
@@ -40,7 +47,7 @@ func(controller *OkLogController) Create(ctx *fiber.Ctx) error {
 	// Guardamos el Ok Log
 	controller.okLogService.Create(createRequest)
 
-	// Recuperamos el último log guardado (es decir, el que recién creamos)
+	// Recuperamos el último Ok Log guardado (es decir, el que recién creamos)
 	// y devolvemos con toda la información que completó la BD
 	logResponse := controller.okLogService.FindLatest()
 
