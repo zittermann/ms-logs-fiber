@@ -25,7 +25,7 @@ func(controller *NokLogController) FindById(ctx *fiber.Ctx) error {
 	logId := ctx.Params("id")
 
 	id, err := strconv.Atoi(logId)
-	helper.ErrorPanic(err, err.Error())
+	helper.ErrorPanic(err)
 
 	logResponse := controller.nokLogService.FindById(uint(id))
 
@@ -44,7 +44,7 @@ func(controller *NokLogController) Create(ctx *fiber.Ctx) error {
 	createRequest := request.CreateNokLogRequest{}
 	
 	err := ctx.BodyParser(&createRequest)
-	helper.ErrorPanic(err, err.Error())
+	helper.ErrorPanic(err)
 
 	controller.nokLogService.Create(createRequest)
 	webResponse := response.Response{

@@ -30,7 +30,7 @@ func NewNokLogServiceImpl(
 // FindById implements service.NokLogService
 func (t *NokLogServiceImpl) FindById(id uint) response.NokLogResponse {
 	logData, err := t.NokLogRepository.FindById(id)
-	helper.ErrorPanic(err, err.Error())
+	helper.ErrorPanic(err)
 
 	logResponse := response.NokLogResponse {
 		ID: logData.ID,
@@ -51,7 +51,7 @@ func (t *NokLogServiceImpl) FindById(id uint) response.NokLogResponse {
 // Create implements service.NokLogService
 func (t *NokLogServiceImpl) Create(log request.CreateNokLogRequest) {
 	err := t.Validate.Struct(log)
-	helper.ErrorPanic(err, err.Error())
+	helper.ErrorPanic(err)
 
 	logModel := model.NokLog {
 		App: log.App,

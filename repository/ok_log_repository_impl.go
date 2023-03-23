@@ -36,7 +36,6 @@ func (t *OkLogRepositoryImpl) Save(log model.OkLog) {
 	result := t.Db.Create(&log)
 	err := result.Error
 	
-	helper.ErrorPanic(err, err.Error())
-
+	helper.ErrorPanic(err)
 }
 

@@ -30,7 +30,7 @@ func NewOkLogServiceImpl(
 // FindById implements service.OkLogService
 func (t *OkLogServiceImpl) FindById(id uint) response.OkLogResponse {
 	logData, err := t.OkLogRepository.FindById(id)
-	helper.ErrorPanic(err, err.Error())
+	helper.ErrorPanic(err)
 
 	logResponse := response.OkLogResponse {
 		ID: logData.ID,
@@ -49,7 +49,7 @@ func (t *OkLogServiceImpl) FindById(id uint) response.OkLogResponse {
 // Create implements service.OkLogService
 func (t *OkLogServiceImpl) Create(log request.CreateOkLogRequest) {
 	err := t.Validate.Struct(log)
-	helper.ErrorPanic(err, err.Error())
+	helper.ErrorPanic(err)
 
 	logModel := model.OkLog {
 		App: log.App,

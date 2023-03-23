@@ -25,7 +25,7 @@ func(controller *OkLogController) FindById(ctx *fiber.Ctx) error {
 	logId := ctx.Params("id")
 
 	id, err := strconv.Atoi(logId)
-	helper.ErrorPanic(err, err.Error())
+	helper.ErrorPanic(err)
 
 	logResponse := controller.okLogService.FindById(uint(id))
 
@@ -44,7 +44,7 @@ func(controller *OkLogController) Create(ctx *fiber.Ctx) error {
 	createRequest := request.CreateOkLogRequest{}
 	
 	err := ctx.BodyParser(&createRequest)
-	helper.ErrorPanic(err, err.Error())
+	helper.ErrorPanic(err)
 
 	controller.okLogService.Create(createRequest)
 	webResponse := response.Response{

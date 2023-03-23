@@ -32,5 +32,5 @@ func (t *NokLogRepositoryImpl) FindById(id uint) (log model.NokLog, err error) {
 func (t *NokLogRepositoryImpl) Save(log model.NokLog) {
 	result := t.Db.Create(&log)
 	err := result.Error
-	helper.ErrorPanic(err, err.Error())
+	helper.ErrorPanic(err)
 }
