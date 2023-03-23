@@ -2,10 +2,8 @@ package controller
 
 import (
 	"ms_logs_go/data/request"
-	"ms_logs_go/data/response"
 	"ms_logs_go/helper"
 	"ms_logs_go/service"
-	"net/http"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
@@ -29,14 +27,14 @@ func(controller *NokLogController) FindById(ctx *fiber.Ctx) error {
 
 	logResponse := controller.nokLogService.FindById(uint(id))
 
-	webResponse := response.Response {
-		Code: http.StatusOK,
-		Status: "Ok",
-		Message: "Nok Log encontrado",
-		Data: logResponse,
-	}
+	if (logResponse.ID == 0) {
 
-	return ctx.Status(fiber.StatusOK).JSON(webResponse)
+		return helper.HandleNotFound(ctx, "No existe ningún " +
+		 "Nok Log con ese ID")
+
+	} 
+
+	return ctx.Status(fiber.StatusOK).JSON(logResponse)
 
 }
 
@@ -46,14 +44,14 @@ func(controller *NokLogController) Create(ctx *fiber.Ctx) error {
 	err := ctx.BodyParser(&createRequest)
 	helper.ErrorPanic(err)
 
+	// Guardamos el Nok Log
 	controller.nokLogService.Create(createRequest)
-	webResponse := response.Response{
-		Code: http.StatusOK,
-		Status: "Ok",
-		Message: "Nok Log creado correctamente",
-		Data: nil,
-	}
 
-	return ctx.Status(fiber.StatusCreated).JSON(webResponse)
+
+	// Recuperamos el último Nok Log guardado (es decir, el que recién creamos)
+	// y devolvemos con toda la información que completó la BD
+	logResponse := controller.nokLogService.FindLatest()
+
+	return ctx.Status(fiber.StatusCreated).JSON(logResponse)
 
 }

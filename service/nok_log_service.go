@@ -7,5 +7,6 @@ import (
 
 type NokLogService interface {
 	FindById(id uint) response.NokLogResponse
+	FindLatest() response.NokLogResponse
 	Create(log request.CreateNokLogRequest)
 }

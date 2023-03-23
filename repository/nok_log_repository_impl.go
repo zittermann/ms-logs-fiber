@@ -19,7 +19,19 @@ func NewNokLogRepositoryImpl(Db *gorm.DB) NokLogRepository {
 // FindById implements repository.NokLogRepository
 func (t *NokLogRepositoryImpl) FindById(id uint) (log model.NokLog, err error) {
 	var logFound model.NokLog
-	result := t.Db.Find(&logFound, id) 
+	result := t.Db.Find(&logFound, id)
+
+	if result != nil {
+		return logFound, nil
+	} else {
+		return logFound, errors.New("Log no existe")
+	}
+}
+
+// FindLatest implements NokLogRepository
+func (t *NokLogRepositoryImpl) FindLatest() (log model.NokLog, err error) {
+	var logFound model.NokLog
+	result := t.Db.Last(&logFound)
 
 	if result != nil {
 		return logFound, nil

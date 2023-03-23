@@ -28,21 +28,42 @@ func NewNokLogServiceImpl(
 }
 
 // FindById implements service.NokLogService
-func (t *NokLogServiceImpl) FindById(id uint) response.NokLogResponse {
+func (t *NokLogServiceImpl) FindById(id uint) response.NokLogResponse{
 	logData, err := t.NokLogRepository.FindById(id)
 	helper.ErrorPanic(err)
 
-	logResponse := response.NokLogResponse {
-		ID: logData.ID,
-		App: logData.App,
-		Proceso: logData.Proceso,
+	logResponse := response.NokLogResponse{
+		ID:             logData.ID,
+		App:            logData.App,
+		Proceso:        logData.Proceso,
 		ProcesoDetalle: logData.ProcesoDetalle,
-		IDUsr: logData.IDUsr,
-		IDExtra: logData.IDExtra,
-		Fecha: logData.Fecha,
-		Request: logData.Request,
-		Response: logData.Response,
-		ErrorCode: logData.ErrorCode,
+		IDUsr:          logData.IDUsr,
+		IDExtra:        logData.IDExtra,
+		Fecha:          logData.Fecha,
+		Request:        logData.Request,
+		Response:       logData.Response,
+		ErrorCode:      logData.ErrorCode,
+	}
+
+	return logResponse
+}
+
+// FindLatest implements NokLogService
+func (t *NokLogServiceImpl) FindLatest() response.NokLogResponse {
+	logData, err := t.NokLogRepository.FindLatest()
+	helper.ErrorPanic(err)
+
+	logResponse := response.NokLogResponse{
+		ID:             logData.ID,
+		App:            logData.App,
+		Proceso:        logData.Proceso,
+		ProcesoDetalle: logData.ProcesoDetalle,
+		IDUsr:          logData.IDUsr,
+		IDExtra:        logData.IDExtra,
+		Fecha:          logData.Fecha,
+		Request:        logData.Request,
+		Response:       logData.Response,
+		ErrorCode:      logData.ErrorCode,
 	}
 
 	return logResponse
@@ -53,20 +74,19 @@ func (t *NokLogServiceImpl) Create(log request.CreateNokLogRequest) {
 	err := t.Validate.Struct(log)
 	helper.ErrorPanic(err)
 
-	logModel := model.NokLog {
-		App: log.App,
-		Proceso: log.Proceso,
+	logModel := model.NokLog{
+		App:            log.App,
+		Proceso:        log.Proceso,
 		ProcesoDetalle: log.ProcesoDetalle,
-		IDUsr: uint64(log.IDUsr),
-		IDExtra: log.IDExtra,
+		IDUsr:          uint64(log.IDUsr),
+		IDExtra:        log.IDExtra,
 
 		Fecha: util.GenerateFecha(),
 
-		Request: log.Request,
-		Response: log.Response,
+		Request:   log.Request,
+		Response:  log.Response,
 		ErrorCode: log.ErrorCode,
 	}
 
 	t.NokLogRepository.Save(logModel)
 }
-
