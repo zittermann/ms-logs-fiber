@@ -2,10 +2,8 @@ package controller
 
 import (
 	"ms_logs_go/data/request"
-	"ms_logs_go/data/response"
 	"ms_logs_go/helper"
 	"ms_logs_go/service"
-	"net/http"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
@@ -29,14 +27,7 @@ func(controller *OkLogController) FindById(ctx *fiber.Ctx) error {
 
 	logResponse := controller.okLogService.FindById(uint(id))
 
-	webResponse := response.Response {
-		Code: http.StatusOK,
-		Status: "Ok",
-		Message: "Ok Log encontrado",
-		Data: logResponse,
-	}
-
-	return ctx.Status(fiber.StatusOK).JSON(webResponse)
+	return ctx.Status(fiber.StatusOK).JSON(logResponse)
 
 }
 
@@ -46,14 +37,13 @@ func(controller *OkLogController) Create(ctx *fiber.Ctx) error {
 	err := ctx.BodyParser(&createRequest)
 	helper.ErrorPanic(err)
 
+	// Guardamos el Ok Log
 	controller.okLogService.Create(createRequest)
-	webResponse := response.Response{
-		Code: http.StatusOK,
-		Status: "Ok",
-		Message: "Ok Log creado correctamente",
-		Data: nil,
-	}
 
-	return ctx.Status(fiber.StatusCreated).JSON(webResponse)
+	// Recuperamos el último log guardado (es decir, el que recién creamos)
+	// y devolvemos con toda la información que completó la BD
+	logResponse := controller.okLogService.FindLatest()
+
+	return ctx.Status(fiber.StatusCreated).JSON(logResponse)
 
 }
