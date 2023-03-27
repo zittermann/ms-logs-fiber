@@ -13,4 +13,11 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+
+# Archivo con las credenciales de la BD
 config.yml
+
+# Directorio contenedor de los archivos para el Swagger
+# Debe ser generado a través del Dockerfile con el siguiente comando
+# swag init
+/docs
