@@ -10,6 +10,7 @@ import (
 	"ms_logs_go/router"
 	"ms_logs_go/service"
 
+	"github.com/ansrivas/fiberprometheus/v2"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 )
@@ -47,6 +48,11 @@ func main() {
 
 	app := fiber.New()
 	app.Mount("/api", routes)
+
+	// Prometheus config
+	prometheus := fiberprometheus.New("my-service-name")
+	prometheus.RegisterAt(app, "/metrics")
+	app.Use(prometheus.Middleware)
 
 	log.Fatal(app.Listen(":33306"))
 
