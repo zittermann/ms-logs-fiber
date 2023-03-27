@@ -24,8 +24,7 @@ func CreateConnection() *gorm.DB {
 	)
 
 	db, err := gorm.Open(mysql.Open(DSN), &gorm.Config{})
-	helper.ErrorPanic(err, `No se pudo establecer 
-		la conexión con la base de datos...`)
+	helper.ErrorPanic(err)
 
 	return db
 

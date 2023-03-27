@@ -7,5 +7,6 @@ import (
 
 type OkLogService interface {
 	FindById(id uint) response.OkLogResponse
+	FindLatest() response.OkLogResponse
 	Create(log request.CreateOkLogRequest)
 }
