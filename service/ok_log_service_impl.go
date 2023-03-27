@@ -24,22 +24,41 @@ func NewOkLogServiceImpl(
 		OkLogRepository: okLogRepository,
 		Validate:        validate,
 	}
-	
+
 }
 
 // FindById implements service.OkLogService
 func (t *OkLogServiceImpl) FindById(id uint) response.OkLogResponse {
 	logData, err := t.OkLogRepository.FindById(id)
-	helper.ErrorPanic(err, err.Error())
+	helper.ErrorPanic(err)
 
-	logResponse := response.OkLogResponse {
-		ID: logData.ID,
-		App: logData.App,
-		Proceso: logData.Proceso,
+	logResponse := response.OkLogResponse{
+		ID:             logData.ID,
+		App:            logData.App,
+		Proceso:        logData.Proceso,
 		ProcesoDetalle: logData.ProcesoDetalle,
-		IDUsr: logData.IDUsr,
-		IDExtra: logData.IDExtra,
-		Fecha: logData.Fecha,
+		IDUsr:          logData.IDUsr,
+		IDExtra:        logData.IDExtra,
+		Fecha:          logData.Fecha,
+	}
+
+	return logResponse
+
+}
+
+// FindLatest implements OkLogService
+func (t *OkLogServiceImpl) FindLatest() response.OkLogResponse {
+	logData, err := t.OkLogRepository.FindLatest()
+	helper.ErrorPanic(err)
+
+	logResponse := response.OkLogResponse{
+		ID:             logData.ID,
+		App:            logData.App,
+		Proceso:        logData.Proceso,
+		ProcesoDetalle: logData.ProcesoDetalle,
+		IDUsr:          logData.IDUsr,
+		IDExtra:        logData.IDExtra,
+		Fecha:          logData.Fecha,
 	}
 
 	return logResponse
@@ -49,17 +68,16 @@ func (t *OkLogServiceImpl) FindById(id uint) response.OkLogResponse {
 // Create implements service.OkLogService
 func (t *OkLogServiceImpl) Create(log request.CreateOkLogRequest) {
 	err := t.Validate.Struct(log)
-	helper.ErrorPanic(err, err.Error())
+	helper.ErrorPanic(err)
 
-	logModel := model.OkLog {
-		App: log.App,
-		Proceso: log.Proceso,
+	logModel := model.OkLog{
+		App:            log.App,
+		Proceso:        log.Proceso,
 		ProcesoDetalle: log.ProcesoDetalle,
-		IDUsr: uint64(log.IDUsr),
-		IDExtra: log.IDExtra,
+		IDUsr:          uint64(log.IDUsr),
+		IDExtra:        log.IDExtra,
 
 		Fecha: util.GenerateFecha(),
-
 	}
 
 	t.OkLogRepository.Save(logModel)

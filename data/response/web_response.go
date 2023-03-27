@@ -1,8 +1,9 @@
 package response
 
+import "time"
+
 type Response struct {
-	Code uint `json:"code"`
-	Status string `json:"status"`
+	Timestamp time.Time `json:"timestamp"`
 	Message string `json:"message"`
-	Data interface{} `json:"data,omitempty"`
+	Error string `json:"error"`
 }
