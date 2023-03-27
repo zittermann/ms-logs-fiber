@@ -19,6 +19,14 @@ func NewNokLogController(service service.NokLogService) *NokLogController {
 	}
 }
 
+// @Summary Obtener un Nok Log por ID
+// @Tags Nok Logs
+// @ID get-nok-log-by-id
+// @Produce json
+// @Param id path string true "nok log ID"
+// @Success 200 {object} response.NokLogResponse
+// @Failure 404 {object} response.Response
+// @Router /api/nok-logs/{id} [get]
 func(controller *NokLogController) FindById(ctx *fiber.Ctx) error {
 	logId := ctx.Params("id")
 
@@ -38,6 +46,14 @@ func(controller *NokLogController) FindById(ctx *fiber.Ctx) error {
 
 }
 
+// @Summary Crea un nuevo Nok Log
+// @Tags Nok Logs
+// @ID create-nok-log
+// @Produce json
+// @Param data body response.NokLogResponse true "noklog data"
+// @Success 200 {object} response.NokLogResponse
+// @Failure 400 {object} response.Response
+// @Router /api/nok-logs [post]
 func(controller *NokLogController) Create(ctx *fiber.Ctx) error {
 	createRequest := request.CreateNokLogRequest{}
 	
@@ -46,7 +62,6 @@ func(controller *NokLogController) Create(ctx *fiber.Ctx) error {
 
 	// Guardamos el Nok Log
 	controller.nokLogService.Create(createRequest)
-
 
 	// Recuperamos el último Nok Log guardado (es decir, el que recién creamos)
 	// y devolvemos con toda la información que completó la BD

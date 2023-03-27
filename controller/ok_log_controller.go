@@ -19,6 +19,14 @@ func NewOkLogController(service service.OkLogService) *OkLogController {
 	}
 }
 
+// @Summary Obtener un Ok Log por ID
+// @Tags Ok Logs
+// @ID get-ok-log-by-id
+// @Produce json
+// @Param id path string true "ok log ID"
+// @Success 200 {object} response.OkLogResponse
+// @Failure 404 {object} response.Response
+// @Router /api/ok-logs/{id} [get]
 func(controller *OkLogController) FindById(ctx *fiber.Ctx) error {
 	logId := ctx.Params("id")
 
@@ -38,6 +46,14 @@ func(controller *OkLogController) FindById(ctx *fiber.Ctx) error {
 
 }
 
+// @Summary Crea un nuevo Ok Log
+// @Tags Ok Logs
+// @ID create-ok-log
+// @Produce json
+// @Param data body response.OkLogResponse true "ok log data"
+// @Success 200 {object} response.OkLogResponse
+// @Failure 400 {object} response.Response
+// @Router /api/ok-logs [post]
 func(controller *OkLogController) Create(ctx *fiber.Ctx) error {
 	createRequest := request.CreateOkLogRequest{}
 	

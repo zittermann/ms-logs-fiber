@@ -10,11 +10,24 @@ import (
 	"ms_logs_go/router"
 	"ms_logs_go/service"
 
+	// swag init
+	// Indispensable importar /docs al main para
+	// poder mostrar correctamente el swagger
+	_ "ms_logs_go/docs"
+
 	"github.com/ansrivas/fiberprometheus/v2"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/swagger"
 )
 
+// @title MS Logs Go
+// @version 1.0
+// @description Microservicio encargado de la creación y recuperación de Logs
+// @contact.name Germán Zittermann
+// @contact.email zitterman@lacaja.com.ar
+// @host localhost:33306
+// @BasePath /api/
 func main() {
 
 	fmt.Println("Started server!")	
@@ -53,6 +66,11 @@ func main() {
 	prometheus := fiberprometheus.New("my-service-name")
 	prometheus.RegisterAt(app, "/metrics")
 	app.Use(prometheus.Middleware)
+
+	// Swagger config
+	// El swag debe ser generado previo a correr el servicio
+	// swag init && go run .
+	app.Get("/swagger/*", swagger.HandlerDefault)
 
 	log.Fatal(app.Listen(":33306"))
 
